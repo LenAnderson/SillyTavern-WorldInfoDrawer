@@ -1,4 +1,7 @@
-body #WorldInfo {
+body #WorldInfo > .stwid--body {
+	display: none;
+}
+body.stwid-- #WorldInfo {
 	&[style*="display: block;"] {
 		display: flex !important;
 	}
@@ -12,9 +15,6 @@ body #WorldInfo {
 
 	#wi-holder {
 		display: none;
-		&.stwid--show {
-			display: block;
-		}
 	}
 
 	> .stwid--body {

@@ -1,4 +1,7 @@
-body #WorldInfo {
+body #WorldInfo > .stwid--body {
+  display: none;
+}
+body.stwid-- #WorldInfo {
   flex-direction: column;
   overflow: hidden;
   --x: var(--nav-bar-width, 1);
@@ -7,61 +10,58 @@ body #WorldInfo {
   width: calc(100vw - var(--nav-bar-width, 0));
   max-height: calc(100dvh - var(--topBarBlockSize) * var(--z));
 }
-body #WorldInfo[style*="display: block;"] {
+body.stwid-- #WorldInfo[style*="display: block;"] {
   display: flex !important;
 }
-body #WorldInfo #wi-holder {
+body.stwid-- #WorldInfo #wi-holder {
   display: none;
 }
-body #WorldInfo #wi-holder.stwid--show {
-  display: block;
-}
-body #WorldInfo > .stwid--body {
+body.stwid-- #WorldInfo > .stwid--body {
   flex: 1 1 auto;
   display: flex;
   gap: 1em;
   overflow: hidden;
 }
-body #WorldInfo .stwid--list {
+body.stwid-- #WorldInfo .stwid--list {
   flex: 0 0 auto;
   display: flex;
   flex-direction: column;
   overflow: hidden;
   width: 300px;
 }
-body #WorldInfo .stwid--list .stwid--controls {
+body.stwid-- #WorldInfo .stwid--list .stwid--controls {
   display: flex;
   gap: 0.75em;
   align-items: center;
 }
-body #WorldInfo .stwid--list .stwid--controls .stwid--searchEntries,
-body #WorldInfo .stwid--list .stwid--controls .stwid--filterActive {
+body.stwid-- #WorldInfo .stwid--list .stwid--controls .stwid--searchEntries,
+body.stwid-- #WorldInfo .stwid--list .stwid--controls .stwid--filterActive {
   display: flex;
   gap: 0.5em;
   align-items: center;
 }
-body #WorldInfo .stwid--list .stwid--books {
+body.stwid-- #WorldInfo .stwid--list .stwid--books {
   flex: 1 1 auto;
   overflow: auto;
 }
-body #WorldInfo .stwid--list .stwid--books .stwid--book {
+body.stwid-- #WorldInfo .stwid--list .stwid--books .stwid--book {
   border-bottom: 2px solid var(--SmartThemeBorderColor);
 }
-body #WorldInfo .stwid--list .stwid--books .stwid--book.stwid--filter-active,
-body #WorldInfo .stwid--list .stwid--books .stwid--book.stwid--filter-query {
+body.stwid-- #WorldInfo .stwid--list .stwid--books .stwid--book.stwid--filter-active,
+body.stwid-- #WorldInfo .stwid--list .stwid--books .stwid--book.stwid--filter-query {
   display: none;
 }
-body #WorldInfo .stwid--list .stwid--books .stwid--book:has(.stwid--entryList .stwid--entry.stwid--active) .stwid--head {
+body.stwid-- #WorldInfo .stwid--list .stwid--books .stwid--book:has(.stwid--entryList .stwid--entry.stwid--active) .stwid--head {
   background-color: var(--white20a);
 }
-body #WorldInfo .stwid--list .stwid--books .stwid--book .stwid--head {
+body.stwid-- #WorldInfo .stwid--list .stwid--books .stwid--book .stwid--head {
   display: flex;
   gap: 0.5em;
   background-color: rgb(var(--primaryBgCol, var(--SmartThemeBlurTintColor)));
   position: sticky;
   top: 0;
 }
-body #WorldInfo .stwid--list .stwid--books .stwid--book .stwid--head .stwid--title {
+body.stwid-- #WorldInfo .stwid--list .stwid--books .stwid--book .stwid--head .stwid--title {
   flex: 1 1 auto;
   cursor: pointer;
   font-weight: bold;
@@ -69,23 +69,23 @@ body #WorldInfo .stwid--list .stwid--books .stwid--book .stwid--head .stwid--tit
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-body #WorldInfo .stwid--list .stwid--books .stwid--book .stwid--head .stwid--actions {
+body.stwid-- #WorldInfo .stwid--list .stwid--books .stwid--book .stwid--head .stwid--actions {
   display: flex;
   gap: 0.25em;
   align-items: center;
 }
-body #WorldInfo .stwid--list .stwid--books .stwid--book .stwid--head .stwid--actions .stwid--action {
+body.stwid-- #WorldInfo .stwid--list .stwid--books .stwid--book .stwid--head .stwid--actions .stwid--action {
   cursor: pointer;
   opacity: 0.5;
   transition: 200ms;
 }
-body #WorldInfo .stwid--list .stwid--books .stwid--book .stwid--head .stwid--actions .stwid--action:hover {
+body.stwid-- #WorldInfo .stwid--list .stwid--books .stwid--book .stwid--head .stwid--actions .stwid--action:hover {
   opacity: 1;
 }
-body #WorldInfo .stwid--list .stwid--books .stwid--book .stwid--entryList.stwid--isCollapsed {
+body.stwid-- #WorldInfo .stwid--list .stwid--books .stwid--book .stwid--entryList.stwid--isCollapsed {
   display: none;
 }
-body #WorldInfo .stwid--list .stwid--books .stwid--book .stwid--entry {
+body.stwid-- #WorldInfo .stwid--list .stwid--books .stwid--book .stwid--entry {
   display: flex;
   gap: 0.5em;
   border-bottom: 2px solid var(--SmartThemeBorderColor);
@@ -93,29 +93,29 @@ body #WorldInfo .stwid--list .stwid--books .stwid--book .stwid--entry {
   overflow: hidden;
   transition: 200ms;
 }
-body #WorldInfo .stwid--list .stwid--books .stwid--book .stwid--entry:hover,
-body #WorldInfo .stwid--list .stwid--books .stwid--book .stwid--entry.stwid--active {
+body.stwid-- #WorldInfo .stwid--list .stwid--books .stwid--book .stwid--entry:hover,
+body.stwid-- #WorldInfo .stwid--list .stwid--books .stwid--book .stwid--entry.stwid--active {
   background-color: var(--white20a);
 }
-body #WorldInfo .stwid--list .stwid--books .stwid--book .stwid--entry:hover .stwid--status,
-body #WorldInfo .stwid--list .stwid--books .stwid--book .stwid--entry.stwid--active .stwid--status {
+body.stwid-- #WorldInfo .stwid--list .stwid--books .stwid--book .stwid--entry:hover .stwid--status,
+body.stwid-- #WorldInfo .stwid--list .stwid--books .stwid--book .stwid--entry.stwid--active .stwid--status {
   opacity: 1;
 }
-body #WorldInfo .stwid--list .stwid--books .stwid--book .stwid--entry :has(.stwid--isEnabled.fa-toggle-off) {
+body.stwid-- #WorldInfo .stwid--list .stwid--books .stwid--book .stwid--entry :has(.stwid--isEnabled.fa-toggle-off) {
   opacity: 0.5;
 }
-body #WorldInfo .stwid--list .stwid--books .stwid--book .stwid--entry .stwid--body {
+body.stwid-- #WorldInfo .stwid--list .stwid--books .stwid--book .stwid--entry .stwid--body {
   flex: 1 1 auto;
   cursor: pointer;
   overflow: hidden;
 }
-body #WorldInfo .stwid--list .stwid--books .stwid--book .stwid--entry .stwid--body .stwid--comment {
+body.stwid-- #WorldInfo .stwid--list .stwid--books .stwid--book .stwid--entry .stwid--body .stwid--comment {
   height: 1lh;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-body #WorldInfo .stwid--list .stwid--books .stwid--book .stwid--entry .stwid--body .stwid--key {
+body.stwid-- #WorldInfo .stwid--list .stwid--books .stwid--book .stwid--entry .stwid--body .stwid--key {
   color: var(--SmartThemeEmColor);
   font-size: smaller;
   font-style: italic;
@@ -124,7 +124,7 @@ body #WorldInfo .stwid--list .stwid--books .stwid--book .stwid--entry .stwid--bo
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-body #WorldInfo .stwid--list .stwid--books .stwid--book .stwid--entry .stwid--status {
+body.stwid-- #WorldInfo .stwid--list .stwid--books .stwid--book .stwid--entry .stwid--status {
   align-self: center;
   display: flex;
   gap: 0.5em;
@@ -132,17 +132,17 @@ body #WorldInfo .stwid--list .stwid--books .stwid--book .stwid--entry .stwid--st
   opacity: 0.5;
   transition: 200ms;
 }
-body #WorldInfo .stwid--list .stwid--books .stwid--book .stwid--entry .stwid--status .stwid--enabled {
+body.stwid-- #WorldInfo .stwid--list .stwid--books .stwid--book .stwid--entry .stwid--status .stwid--enabled {
   color: var(--SmartThemeQuoteColor);
   cursor: pointer;
 }
-body #WorldInfo .stwid--editor {
+body.stwid-- #WorldInfo .stwid--editor {
   flex: 1 1 auto;
   display: flex;
   flex-direction: column;
   overflow: hidden;
 }
-body #WorldInfo .stwid--editor:empty::after {
+body.stwid-- #WorldInfo .stwid--editor:empty::after {
   content: "\f558";
   font-family: "Font Awesome 6 Free";
   font-size: 20em;
@@ -152,48 +152,48 @@ body #WorldInfo .stwid--editor:empty::after {
   align-items: center;
   justify-content: center;
 }
-body #WorldInfo .stwid--editor.stwid--focus #WIEntryHeaderTitlesPC,
-body #WorldInfo .stwid--editor.stwid--focus .world_entry *:not(:has([name="content"])):not([name="content"]) {
+body.stwid-- #WorldInfo .stwid--editor.stwid--focus #WIEntryHeaderTitlesPC,
+body.stwid-- #WorldInfo .stwid--editor.stwid--focus .world_entry *:not(:has([name="content"])):not([name="content"]) {
   display: none;
 }
-body #WorldInfo .stwid--editor.stwid--focus .stwid--unfocusToggle {
+body.stwid-- #WorldInfo .stwid--editor.stwid--focus .stwid--unfocusToggle {
   display: flex;
 }
-body #WorldInfo .stwid--editor .stwid--unfocusToggle {
+body.stwid-- #WorldInfo .stwid--editor .stwid--unfocusToggle {
   display: none;
 }
-body #WorldInfo .stwid--editor .stwid--focusToggle {
+body.stwid-- #WorldInfo .stwid--editor .stwid--focusToggle {
   margin-left: 1em;
 }
-body #WorldInfo .stwid--editor .world_entry,
-body #WorldInfo .stwid--editor .world_entry_form,
-body #WorldInfo .stwid--editor .inline-drawer {
+body.stwid-- #WorldInfo .stwid--editor .world_entry,
+body.stwid-- #WorldInfo .stwid--editor .world_entry_form,
+body.stwid-- #WorldInfo .stwid--editor .inline-drawer {
   height: 100%;
 }
-body #WorldInfo .stwid--editor .inline-drawer {
+body.stwid-- #WorldInfo .stwid--editor .inline-drawer {
   display: flex;
   flex-direction: column;
 }
-body #WorldInfo .stwid--editor .drag-handle,
-body #WorldInfo .stwid--editor .inline-drawer-toggle {
+body.stwid-- #WorldInfo .stwid--editor .drag-handle,
+body.stwid-- #WorldInfo .stwid--editor .inline-drawer-toggle {
   display: none;
 }
-body #WorldInfo .stwid--editor .inline-drawer-content {
+body.stwid-- #WorldInfo .stwid--editor .inline-drawer-content {
   flex: 1 1 auto;
   display: flex !important;
   flex-direction: column;
 }
-body #WorldInfo .stwid--editor .inline-drawer-content > :nth-child(1) {
+body.stwid-- #WorldInfo .stwid--editor .inline-drawer-content > :nth-child(1) {
   flex: 1 1 auto;
   flex-direction: column;
   align-items: stretch;
 }
-body #WorldInfo .stwid--editor [name="contentAndCharFilterBlock"] {
+body.stwid-- #WorldInfo .stwid--editor [name="contentAndCharFilterBlock"] {
   flex: 1 1 auto !important;
 }
-body #WorldInfo .stwid--editor [name="content"] {
+body.stwid-- #WorldInfo .stwid--editor [name="content"] {
   flex: 1 1 auto;
 }
-body #WorldInfo .stwid--editor [name="WIEntryBottomControls"] {
+body.stwid-- #WorldInfo .stwid--editor [name="WIEntryBottomControls"] {
   display: none;
 }

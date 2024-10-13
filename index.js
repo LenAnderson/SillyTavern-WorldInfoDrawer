@@ -384,6 +384,7 @@ const loadListDebounced = debounce(()=>loadList());
 
 
 const addDrawer = ()=>{
+    document.body.classList.add('stwid--');
     const holder = document.querySelector('#wi-holder');
     const drawerContent = document.querySelector('#WorldInfo'); {
         let searchEntriesInput;
@@ -471,7 +472,7 @@ const addDrawer = ()=>{
         }
     }
     drawerContent.querySelector('h3 > span').addEventListener('click', ()=>{
-        holder.classList.toggle('stwid--show');
+        document.body.classList.toggle('stwid--');
     });
     const moSel = new MutationObserver(()=>updateWIChangeDebounced());
     moSel.observe(document.querySelector('#world_editor_select'), { childList: true });
