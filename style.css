@@ -8,7 +8,8 @@ body.stwid-- #WorldInfo {
   --y: var(--nav-bar-width, 0);
   --z: calc(1 - var(--y) / var(--x));
   width: calc(100vw - var(--nav-bar-width, 0));
-  max-height: calc(100dvh - var(--topBarBlockSize) * var(--z));
+  height: calc(100dvh - var(--topBarBlockSize) * var(--z));
+  max-height: unset;
 }
 body.stwid-- #WorldInfo[style*="display: block;"] {
   display: flex !important;
