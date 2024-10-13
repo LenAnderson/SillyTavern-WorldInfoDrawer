@@ -1,6 +1,6 @@
 import { event_types, eventSource } from '../../../../script.js';
 import { renderTemplateAsync } from '../../../templates.js';
-import { debounce } from '../../../utils.js';
+import { debounce, delay } from '../../../utils.js';
 import { createWorldInfoEntry, getWorldEntry, loadWorldInfo, onWorldInfoChange, saveWorldInfo, selected_world_info, world_info, world_names } from '../../../world-info.js';
 
 const dom = {
@@ -486,3 +486,15 @@ const addDrawer = ()=>{
 };
 addDrawer();
 loadListDebounced();
+
+
+let isDiscord;
+const checkDiscord = async()=>{
+    let newIsDiscord = window.getComputedStyle(document.body).getPropertyValue('--nav-bar-width') !== '';
+    if (isDiscord != newIsDiscord) {
+        isDiscord = newIsDiscord;
+        document.body.classList[isDiscord ? 'remove' : 'add']('stwid--nonDiscord');
+    }
+    setTimeout(()=>checkDiscord(), 1000);
+};
+checkDiscord();

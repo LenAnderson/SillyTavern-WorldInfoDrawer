@@ -1,18 +1,18 @@
 body #WorldInfo > .stwid--body {
 	display: none;
 }
+body.stwid--.stwid--nonDiscord #WorldInfo {
+	width: 100vw;
+	height: calc(100dvh - var(--topBarBlockSize));
+	max-height: unset;
+}
 body.stwid-- #WorldInfo {
 	&[style*="display: block;"] {
 		display: flex !important;
 	}
 	flex-direction: column;
 	overflow: hidden;
-	--x: var(--nav-bar-width, 1);
-    --y: var(--nav-bar-width, 0);
-    --z: calc(1 - var(--y) / var(--x));
-    width: calc(100vw - var(--nav-bar-width, 0));
-    height: calc(100dvh - var(--topBarBlockSize) * var(--z));
-	max-height: unset;
+
 
 	#wi-holder {
 		display: none;
