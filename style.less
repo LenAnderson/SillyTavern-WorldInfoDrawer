@@ -1,0 +1,216 @@
+body #WorldInfo {
+	&[style*="display: block;"] {
+		display: flex !important;
+	}
+	flex-direction: column;
+	overflow: hidden;
+	--x: var(--nav-bar-width, 1);
+    --y: var(--nav-bar-width, 0);
+    --z: calc(1 - var(--y) / var(--x));
+    width: calc(100vw - var(--nav-bar-width, 0));
+    max-height: calc(100dvh - var(--topBarBlockSize) * var(--z));
+
+	#wi-holder {
+		display: none;
+		&.stwid--show {
+			display: block;
+		}
+	}
+
+	> .stwid--body {
+		flex: 1 1 auto;
+
+		display: flex;
+
+		gap: 1em;
+		overflow: hidden;
+	}
+	.stwid--list {
+		flex: 0 0 auto;
+
+		display: flex;
+		flex-direction: column;
+
+		overflow: hidden;
+		width: 300px;
+		.stwid--controls {
+			display: flex;
+			gap: 0.75em;
+			align-items: center;
+			.stwid--searchEntries, .stwid--filterActive {
+				display: flex;
+				gap: 0.5em;
+				align-items: center;
+			}
+		}
+		.stwid--books {
+			flex: 1 1 auto;
+
+			overflow: auto;
+
+			.stwid--book {
+				border-bottom: 2px solid var(--SmartThemeBorderColor);
+				&.stwid--filter-active,
+				&.stwid--filter-query
+				{
+					display: none;
+				}
+				&:has(.stwid--entryList .stwid--entry.stwid--active) .stwid--head {
+					background-color: var(--white20a);
+				}
+				.stwid--head {
+					display: flex;
+					gap: 0.5em;
+					background-color: rgb(var(--primaryBgCol, var(--SmartThemeBlurTintColor)));
+					position: sticky;
+					top: 0;
+					.stwid--title {
+						flex: 1 1 auto;
+						cursor: pointer;
+						font-weight: bold;
+						overflow: hidden;
+						text-overflow: ellipsis;
+						white-space: nowrap;
+					}
+					.stwid--actions {
+						display: flex;
+						gap: 0.25em;
+						align-items: center;
+						.stwid--action {
+							cursor: pointer;
+							opacity: 0.5;
+							transition: 200ms;
+							&:hover {
+								opacity: 1;
+							}
+						}
+					}
+				}
+				.stwid--entryList {
+					&.stwid--isCollapsed {
+						display: none;
+					}
+				}
+				.stwid--entry {
+					display: flex;
+					gap: 0.5em;
+					border-bottom: 2px solid var(--SmartThemeBorderColor);
+					margin-left: 1em;
+					overflow: hidden;
+					transition: 200ms;
+					&:hover, &.stwid--active {
+						background-color: var(--white20a);
+						.stwid--status {
+							opacity: 1;
+						}
+					}
+					:has(.stwid--isEnabled.fa-toggle-off) {
+						opacity: 0.5;
+					}
+					.stwid--body {
+						flex: 1 1 auto;
+						cursor: pointer;
+						overflow: hidden;
+						.stwid--comment {
+							height: 1lh;
+							overflow: hidden;
+							text-overflow: ellipsis;
+							white-space: nowrap;
+						}
+						.stwid--key {
+							color: var(--SmartThemeEmColor);
+							font-size: smaller;
+							font-style: italic;
+							height: 1lh;
+							overflow: hidden;
+							text-overflow: ellipsis;
+							white-space: nowrap;
+						}
+					}
+					.stwid--status {
+						align-self: center;
+						display: flex;
+						gap: 0.5em;
+						align-items: baseline;
+						opacity: 0.5;
+						transition: 200ms;
+						.stwid--enabled {
+							color: var(--SmartThemeQuoteColor);
+							cursor: pointer;
+						}
+					}
+				}
+			}
+		}
+	}
+	.stwid--editor {
+		flex: 1 1 auto;
+
+		display: flex;
+		flex-direction: column;
+
+		overflow: hidden;
+
+		&:empty {
+			&::after {
+				content: "\f558";
+				font-family: "Font Awesome 6 Free";
+				font-size: 20em;
+				opacity: 0.125;
+				display: flex;
+				height: 100%;
+				align-items: center;
+				justify-content: center;
+			}
+		}
+
+		&.stwid--focus {
+			#WIEntryHeaderTitlesPC,
+			.world_entry *:not(:has([name="content"])):not([name="content"]) {
+				display: none;
+			}
+			.stwid--unfocusToggle {
+				display: flex;
+			}
+		}
+		.stwid--unfocusToggle {
+			display: none;
+		}
+		.stwid--focusToggle {
+			margin-left: 1em;
+		}
+
+		.world_entry,
+		.world_entry_form,
+		.inline-drawer {
+			height: 100%;
+		}
+		.inline-drawer {
+			display: flex;
+			flex-direction: column;
+		}
+		.drag-handle,
+		.inline-drawer-toggle {
+			display: none;
+		}
+		.inline-drawer-content {
+			flex: 1 1 auto;
+			display: flex !important;
+			flex-direction: column;
+			> :nth-child(1) {
+				flex: 1 1 auto;
+				flex-direction: column;
+				align-items: stretch;
+			}
+		}
+		[name="contentAndCharFilterBlock"] {
+			flex: 1 1 auto !important;
+		}
+		[name="content"] {
+			flex: 1 1 auto;
+		}
+		[name="WIEntryBottomControls"] {
+			display: none;
+		}
+	}
+}
