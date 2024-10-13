@@ -140,6 +140,15 @@ eventSource.on(event_types.WORLDINFO_UPDATED, (name, world)=>updateWIChangeDebou
 eventSource.on(event_types.WORLDINFO_SETTINGS_UPDATED, ()=>updateSettingsChange());
 
 
+export const jumpToEntry = async(name, uid)=>{
+    cache[name].dom.entryList.classList.remove('stwid--isCollapsed');
+    cache[name].dom.entry[uid].root.scrollIntoView({ block:'center', inline:'center' });
+    if (currentEditor?.name != name || currentEditor?.uid != uid) {
+        cache[name].dom.entry[uid].root.click();
+    }
+};
+
+
 const renderBook = async(name, before = null)=>{
     const data = await loadWorldInfo(name);
     const world = { entries:{} };
