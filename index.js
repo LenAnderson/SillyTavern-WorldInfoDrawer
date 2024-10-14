@@ -10,9 +10,14 @@ const dom = {
     books: undefined,
     /**@type {HTMLElement} */
     editor: undefined,
+    /**@type {HTMLElement} */
+    activationToggle: undefined,
 };
 /**@type {{name:string, uid:string}} */
 let currentEditor;
+
+const activationBlock = document.querySelector('#wiActivationSettings');
+const activationBlockParent = activationBlock.parentElement;
 
 const entryState = function (entry) {
     if (entry.constant === true) {
@@ -150,6 +155,9 @@ eventSource.on(event_types.WORLDINFO_SETTINGS_UPDATED, ()=>updateSettingsChange(
 
 
 export const jumpToEntry = async(name, uid)=>{
+    if (dom.activationToggle.classList.contains('stwid--active')) {
+        dom.activationToggle.click();
+    }
     cache[name].dom.entryList.classList.remove('stwid--isCollapsed');
     cache[name].dom.collapseToggle.classList.add('fa-chevron-up');
     cache[name].dom.collapseToggle.classList.remove('fa-chevron-down');
@@ -467,6 +475,9 @@ const renderEntry = async(e, name, before = null)=>{
                     ce.root.classList.remove('stwid--active');
                 }
             }
+            if (dom.activationToggle.classList.contains('stwid--active')) {
+                dom.activationToggle.click();
+            }
             entry.classList.add('stwid--active');
             dom.editor.innerHTML = '';
             const unfocus = document.createElement('div'); {
@@ -552,16 +563,16 @@ const addDrawer = ()=>{
                         controls.append(imp);
                     }
                     const settings = document.createElement('div'); {
+                        dom.activationToggle = settings;
                         settings.classList.add('stwid--activation');
                         settings.classList.add('menu_button');
                         settings.classList.add('fa-solid', 'fa-fw', 'fa-cog');
                         settings.title = 'Global Activation Settings';
-                        const block = document.querySelector('#wiActivationSettings');
-                        const blockParent = block.parentElement;
                         settings.addEventListener('click', ()=>{
                             const is = settings.classList.toggle('stwid--active');
+                            currentEditor = null;
                             if (is) {
-                                editor.innerHTML = '';
+                                dom.editor.innerHTML = '';
                                 for (const cb of Object.values(cache)) {
                                     for (const ce of Object.values(cb.dom.entry)) {
                                         ce.root.classList.remove('stwid--active');
@@ -569,12 +580,12 @@ const addDrawer = ()=>{
                                 }
                                 const h4 = document.createElement('h4'); {
                                     h4.textContent = 'Global World Info/Lorebook activation settings';
-                                    editor.append(h4);
+                                    dom.editor.append(h4);
                                 }
-                                editor.append(block);
+                                dom.editor.append(activationBlock);
                             } else {
-                                blockParent.append(block);
-                                editor.innerHTML = '';
+                                activationBlockParent.append(activationBlock);
+                                dom.editor.innerHTML = '';
                             }
                         });
                         controls.append(settings);
@@ -661,7 +672,12 @@ const addDrawer = ()=>{
         }
     }
     drawerContent.querySelector('h3 > span').addEventListener('click', ()=>{
-        document.body.classList.toggle('stwid--');
+        const is = document.body.classList.toggle('stwid--');
+        if (!is) {
+            if (dom.activationToggle.classList.contains('stwid--active')) {
+                dom.activationToggle.click();
+            }
+        }
     });
     const moSel = new MutationObserver(()=>updateWIChangeDebounced());
     moSel.observe(document.querySelector('#world_editor_select'), { childList: true });
