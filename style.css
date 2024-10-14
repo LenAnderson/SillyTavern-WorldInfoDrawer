@@ -101,6 +101,9 @@ body.stwid-- #WorldInfo .stwid--list .stwid--books .stwid--book .stwid--entry {
   overflow: hidden;
   transition: 200ms;
 }
+body.stwid-- #WorldInfo .stwid--list .stwid--books .stwid--book .stwid--entry.stwid--filter-query {
+  display: none;
+}
 body.stwid-- #WorldInfo .stwid--list .stwid--books .stwid--book .stwid--entry:hover,
 body.stwid-- #WorldInfo .stwid--list .stwid--books .stwid--book .stwid--entry.stwid--active {
   background-color: var(--white20a);

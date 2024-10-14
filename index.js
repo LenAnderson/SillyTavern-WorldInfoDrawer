@@ -607,11 +607,23 @@ const addDrawer = ()=>{
                                     const entryMatch = searchEntriesInput.checked && Object.values(cache[b].entries).find(e=>e.comment.toLowerCase().includes(query));
                                     if (bookMatch || entryMatch) {
                                         cache[b].dom.root.classList.remove('stwid--filter-query');
+                                        if (searchEntriesInput.checked) {
+                                            for (const e of Object.values(cache[b].entries)) {
+                                                if (bookMatch || e.comment.toLowerCase().includes(query)) {
+                                                    cache[b].dom.entry[e.uid].root.classList.remove('stwid--filter-query');
+                                                } else {
+                                                    cache[b].dom.entry[e.uid].root.classList.add('stwid--filter-query');
+                                                }
+                                            }
+                                        }
                                     } else {
                                         cache[b].dom.root.classList.add('stwid--filter-query');
                                     }
                                 } else {
                                     cache[b].dom.root.classList.remove('stwid--filter-query');
+                                    for (const e of Object.values(cache[b].entries)) {
+                                        cache[b].dom.entry[e.uid].root.classList.remove('stwid--filter-query');
+                                    }
                                 }
                             }
                         });
