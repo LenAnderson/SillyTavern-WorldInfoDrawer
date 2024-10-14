@@ -1,7 +1,9 @@
 import { event_types, eventSource } from '../../../../script.js';
+import { extensionNames } from '../../../extensions.js';
+import { Popup } from '../../../popup.js';
 import { renderTemplateAsync } from '../../../templates.js';
 import { debounce, delay } from '../../../utils.js';
-import { createWorldInfoEntry, getWorldEntry, loadWorldInfo, onWorldInfoChange, saveWorldInfo, selected_world_info, world_info, world_names } from '../../../world-info.js';
+import { createNewWorldInfo, createWorldInfoEntry, getFreeWorldName, getWorldEntry, loadWorldInfo, onWorldInfoChange, saveWorldInfo, selected_world_info, world_info, world_names } from '../../../world-info.js';
 
 const dom = {
     /**@type {HTMLElement} */
@@ -32,8 +34,13 @@ const updateSettingsChange = ()=>{
         }
     }
 };
+let updateWIChangeStarted = Promise.withResolvers();
+/**@type {PromiseWithResolvers<any>} */
+let updateWIChangeFinished;
 const updateWIChange = async(name = null, data = null)=>{
     console.log('[STWID]', '[UPDATE-WI]', name, data);
+    updateWIChangeFinished = Promise.withResolvers();
+    updateWIChangeStarted.resolve();
     // removed books
     for (const [n, w] of Object.entries(cache)) {
         if (world_names.includes(n)) continue;
@@ -66,7 +73,7 @@ const updateWIChange = async(name = null, data = null)=>{
             cache[name].dom.entry[e].root.remove();
             delete cache[name].dom.entry[e];
             delete cache[name].entries[e];
-            if (currentEditor.name == name && currentEditor.uid == e) {
+            if (currentEditor?.name == name && currentEditor?.uid == e) {
                 currentEditor = null;
                 dom.editor.innerHTML = '';
             }
@@ -110,7 +117,7 @@ const updateWIChange = async(name = null, data = null)=>{
                     }
                 }
             }
-            if (hasChange && currentEditor.name == name && currentEditor.uid == e) {
+            if (hasChange && currentEditor?.name == name && currentEditor?.uid == e) {
                 // cache[name].dom.entry[e].root.click();
             }
         }
@@ -133,6 +140,8 @@ const updateWIChange = async(name = null, data = null)=>{
             }
         }
     }
+    updateWIChangeStarted = Promise.withResolvers();
+    updateWIChangeFinished.resolve();
 };
 const updateWIChangeDebounced = debounce(updateWIChange);
 
@@ -142,6 +151,8 @@ eventSource.on(event_types.WORLDINFO_SETTINGS_UPDATED, ()=>updateSettingsChange(
 
 export const jumpToEntry = async(name, uid)=>{
     cache[name].dom.entryList.classList.remove('stwid--isCollapsed');
+    cache[name].dom.collapseToggle.classList.add('fa-chevron-up');
+    cache[name].dom.collapseToggle.classList.remove('fa-chevron-down');
     cache[name].dom.entry[uid].root.scrollIntoView({ block:'center', inline:'center' });
     if (currentEditor?.name != name || currentEditor?.uid != uid) {
         cache[name].dom.entry[uid].root.click();
@@ -223,9 +234,125 @@ const renderBook = async(name, before = null)=>{
                     menuTrigger.classList.add('stwid--action');
                     menuTrigger.classList.add('stwid--menuTrigger');
                     menuTrigger.classList.add('fa-solid', 'fa-fw', 'fa-ellipsis-vertical');
+                    menuTrigger.addEventListener('click', ()=>{
+                        menuTrigger.style.anchorName = '--stwid--ctxAnchor';
+                        const blocker = document.createElement('div'); {
+                            blocker.classList.add('stwid--blocker');
+                            blocker.addEventListener('click', ()=>{
+                                blocker.remove();
+                                menuTrigger.style.anchorName = '';
+                            });
+                            const menu = document.createElement('div'); {
+                                menu.classList.add('stwid--menu');
+                                const rename = document.createElement('div'); {
+                                    rename.classList.add('stwid--item');
+                                    rename.classList.add('stwid--rename');
+                                    rename.addEventListener('click', async(evt)=>{
+                                        evt.stopPropagation();
+                                        toastr.warning('not implemented');
+                                    });
+                                    const i = document.createElement('i'); {
+                                        i.classList.add('stwid--icon');
+                                        i.classList.add('fa-solid', 'fa-fw', 'fa-pencil');
+                                        rename.append(i);
+                                    }
+                                    const txt = document.createElement('span'); {
+                                        txt.classList.add('stwid--label');
+                                        txt.textContent = 'Rename Book';
+                                        rename.append(txt);
+                                    }
+                                    menu.append(rename);
+                                }
+                                if (extensionNames.includes('third-party/SillyTavern-WorldInfoBulkEdit')) {
+                                    const bulk = document.createElement('div'); {
+                                        bulk.classList.add('stwid--item');
+                                        bulk.classList.add('stwid--bulkEdit');
+                                        bulk.addEventListener('click', async(evt)=>{
+                                            const sel = /**@type {HTMLSelectElement}*/(document.querySelector('#world_editor_select'));
+                                            sel.value = /**@type {HTMLOptionElement[]}*/([...sel.children]).find(it=>it.textContent == name).value;
+                                            sel.dispatchEvent(new Event('change', { bubbles:true }));
+                                            await delay(500);
+                                            document.querySelector('.stwibe--trigger').click();
+                                        });
+                                        const i = document.createElement('i'); {
+                                            i.classList.add('stwid--icon');
+                                            i.classList.add('fa-solid', 'fa-fw', 'fa-list-check');
+                                            bulk.append(i);
+                                        }
+                                        const txt = document.createElement('span'); {
+                                            txt.classList.add('stwid--label');
+                                            txt.textContent = 'Bulk Edit';
+                                            bulk.append(txt);
+                                        }
+                                        menu.append(bulk);
+                                    }
+                                }
+                                const exp = document.createElement('div'); {
+                                    exp.classList.add('stwid--item');
+                                    exp.classList.add('stwid--export');
+                                    exp.addEventListener('click', async(evt)=>{
+                                        evt.stopPropagation();
+                                        toastr.warning('not implemented');
+                                    });
+                                    const i = document.createElement('i'); {
+                                        i.classList.add('stwid--icon');
+                                        i.classList.add('fa-solid', 'fa-fw', 'fa-file-export');
+                                        exp.append(i);
+                                    }
+                                    const txt = document.createElement('span'); {
+                                        txt.classList.add('stwid--label');
+                                        txt.textContent = 'Export Book';
+                                        exp.append(txt);
+                                    }
+                                    menu.append(exp);
+                                }
+                                const dup = document.createElement('div'); {
+                                    dup.classList.add('stwid--item');
+                                    dup.classList.add('stwid--duplicate');
+                                    dup.addEventListener('click', async(evt)=>{
+                                        evt.stopPropagation();
+                                        toastr.warning('not implemented');
+                                    });
+                                    const i = document.createElement('i'); {
+                                        i.classList.add('stwid--icon');
+                                        i.classList.add('fa-solid', 'fa-fw', 'fa-paste');
+                                        dup.append(i);
+                                    }
+                                    const txt = document.createElement('span'); {
+                                        txt.classList.add('stwid--label');
+                                        txt.textContent = 'Duplicate Book';
+                                        dup.append(txt);
+                                    }
+                                    menu.append(dup);
+                                }
+                                const del = document.createElement('div'); {
+                                    del.classList.add('stwid--item');
+                                    del.classList.add('stwid--delete');
+                                    del.addEventListener('click', async(evt)=>{
+                                        evt.stopPropagation();
+                                        toastr.warning('not implemented');
+                                    });
+                                    const i = document.createElement('i'); {
+                                        i.classList.add('stwid--icon');
+                                        i.classList.add('fa-solid', 'fa-fw', 'fa-trash-can');
+                                        del.append(i);
+                                    }
+                                    const txt = document.createElement('span'); {
+                                        txt.classList.add('stwid--label');
+                                        txt.textContent = 'Delete Book';
+                                        del.append(txt);
+                                    }
+                                    menu.append(del);
+                                }
+                                blocker.append(menu);
+                            }
+                            document.body.append(blocker);
+                        }
+                    });
                     actions.append(menuTrigger);
                 }
                 collapseToggle = document.createElement('div'); {
+                    cache[name].dom.collapseToggle = collapseToggle;
                     collapseToggle.classList.add('stwid--action');
                     collapseToggle.classList.add('stwid--collapseToggle');
                     collapseToggle.classList.add('fa-solid', 'fa-fw', 'fa-chevron-down');
@@ -394,6 +521,68 @@ const addDrawer = ()=>{
                 list.classList.add('stwid--list');
                 const controls = document.createElement('div'); {
                     controls.classList.add('stwid--controls');
+                    const add = /**@type {HTMLElement}*/(document.querySelector('#world_create_button').cloneNode(true)); {
+                        add.removeAttribute('id');
+                        add.classList.add('stwid--addBook');
+                        add.addEventListener('click', async()=>{
+                            const startPromise = updateWIChangeStarted.promise;
+                            const tempName = getFreeWorldName();
+                            const finalName = await Popup.show.input('Create a new World Info', 'Enter a name for the new file:', tempName);
+                            if (finalName) {
+                                const created = await createNewWorldInfo(finalName, { interactive: true });
+                                if (created) {
+                                    await startPromise;
+                                    await updateWIChangeFinished.promise;
+                                    cache[finalName].dom.entryList.classList.remove('stwid--isCollapsed');
+                                    cache[name].dom.collapseToggle.classList.add('fa-chevron-up');
+                                    cache[name].dom.collapseToggle.classList.remove('fa-chevron-down');
+                                    cache[finalName].dom.root.scrollIntoView({ block:'center', inline:'center' });
+                                }
+                            }
+                        });
+                        controls.append(add);
+                    }
+                    const imp = document.createElement('div'); {
+                        imp.classList.add('menu_button');
+                        imp.classList.add('fa-solid', 'fa-fw', 'fa-file-import');
+                        imp.title = 'Import Book';
+                        imp.addEventListener('click', ()=>{
+                            /**@type {HTMLInputElement}*/(document.querySelector('#world_import_file')).click();
+                        });
+                        controls.append(imp);
+                    }
+                    const settings = document.createElement('div'); {
+                        settings.classList.add('stwid--activation');
+                        settings.classList.add('menu_button');
+                        settings.classList.add('fa-solid', 'fa-fw', 'fa-cog');
+                        settings.title = 'Global Activation Settings';
+                        const block = document.querySelector('#wiActivationSettings');
+                        const blockParent = block.parentElement;
+                        settings.addEventListener('click', ()=>{
+                            const is = settings.classList.toggle('stwid--active');
+                            if (is) {
+                                editor.innerHTML = '';
+                                for (const cb of Object.values(cache)) {
+                                    for (const ce of Object.values(cb.dom.entry)) {
+                                        ce.root.classList.remove('stwid--active');
+                                    }
+                                }
+                                const h4 = document.createElement('h4'); {
+                                    h4.textContent = 'Global World Info/Lorebook activation settings';
+                                    editor.append(h4);
+                                }
+                                editor.append(block);
+                            } else {
+                                blockParent.append(block);
+                                editor.innerHTML = '';
+                            }
+                        });
+                        controls.append(settings);
+                    }
+                    list.append(controls);
+                }
+                const filter = document.createElement('div'); {
+                    filter.classList.add('stwid--filter');
                     const search = document.createElement('input'); {
                         search.classList.add('stwid--search');
                         search.classList.add('text_pole');
@@ -415,7 +604,7 @@ const addDrawer = ()=>{
                                 }
                             }
                         });
-                        controls.append(search);
+                        filter.append(search);
                     }
                     const searchEntries = document.createElement('label'); {
                         searchEntries.classList.add('stwid--searchEntries');
@@ -429,7 +618,7 @@ const addDrawer = ()=>{
                             searchEntries.append(inp);
                         }
                         searchEntries.append('Entries');
-                        controls.append(searchEntries);
+                        filter.append(searchEntries);
                     }
                     const filterActive = document.createElement('label'); {
                         filterActive.classList.add('stwid--filterActive');
@@ -452,9 +641,9 @@ const addDrawer = ()=>{
                             filterActive.append(inp);
                         }
                         filterActive.append('Active');
-                        controls.append(filterActive);
+                        filter.append(filterActive);
                     }
-                    list.append(controls);
+                    list.append(filter);
                 }
                 const books = document.createElement('div'); {
                     dom.books = books;

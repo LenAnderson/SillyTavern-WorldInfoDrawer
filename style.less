@@ -36,6 +36,14 @@ body.stwid-- #WorldInfo {
 		width: 300px;
 		.stwid--controls {
 			display: flex;
+			gap: 0.25em;
+			align-items: center;
+			.stwid--active {
+				color: var(--SmartThemeQuoteColor);
+			}
+		}
+		.stwid--filter {
+			display: flex;
 			gap: 0.75em;
 			align-items: center;
 			.stwid--searchEntries, .stwid--filterActive {
@@ -165,6 +173,14 @@ body.stwid-- #WorldInfo {
 			}
 		}
 
+		#wiActivationSettings {
+			flex-wrap: nowrap;
+			#wiCheckboxes {
+				flex: 0 0 auto;
+				width: unset;
+			}
+		}
+
 		&.stwid--focus {
 			#WIEntryHeaderTitlesPC,
 			.world_entry *:not(:has([name="content"])):not([name="content"]) {
@@ -212,6 +228,53 @@ body.stwid-- #WorldInfo {
 		}
 		[name="WIEntryBottomControls"] {
 			display: none;
+		}
+	}
+}
+
+
+
+.stwid--blocker {
+	position: fixed;
+	inset: 0;
+	z-index: 30000;
+	.stwid--menu {
+		position: fixed;
+		position-anchor: --stwid--ctxAnchor;
+		position-area: bottom right;
+		position-try-fallbacks: flip-block, flip-inline;
+
+		margin-top: -1lh;
+		filter: drop-shadow(1px 1px 2px var(--black50a));
+		z-index: 30000;
+		overflow-x: clip;
+		overflow-y: auto;
+		border-radius: 10px;
+		display: flex;
+		flex-direction: column;
+		background-color: var(--secondaryBg, var(--SmartThemeBlurTintColor));
+
+		.stwid--item {
+			opacity: 0.5;
+			background-color: rgb(255 255 255 / 0);
+			cursor: pointer;
+			transition: 200ms;
+			display: flex;
+			gap: 0.5em;
+			align-items: baseline;
+			padding: 5px;
+			&:hover {
+				opacity: 1;
+				background-color: rgb(255 255 255 / 0.0625);
+			}
+			.stwid--icon {
+				flex: 0 0 auto;
+				width: 1.25em;
+				text-align: center;
+			}
+			.stwid--label {
+				flex: 1 1 auto;
+			}
 		}
 	}
 }
