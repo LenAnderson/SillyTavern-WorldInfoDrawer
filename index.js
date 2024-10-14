@@ -246,7 +246,17 @@ const renderBook = async(name, before = null)=>{
                         menuTrigger.style.anchorName = '--stwid--ctxAnchor';
                         const blocker = document.createElement('div'); {
                             blocker.classList.add('stwid--blocker');
-                            blocker.addEventListener('click', ()=>{
+                            blocker.addEventListener('mousedown', (evt)=>{
+                                evt.stopPropagation();
+                            });
+                            blocker.addEventListener('pointerdown', (evt)=>{
+                                evt.stopPropagation();
+                            });
+                            blocker.addEventListener('touchstart', (evt)=>{
+                                evt.stopPropagation();
+                            });
+                            blocker.addEventListener('click', (evt)=>{
+                                evt.stopPropagation();
                                 blocker.remove();
                                 menuTrigger.style.anchorName = '';
                             });
