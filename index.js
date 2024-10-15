@@ -2,7 +2,7 @@ import { event_types, eventSource } from '../../../../script.js';
 import { extensionNames } from '../../../extensions.js';
 import { Popup } from '../../../popup.js';
 import { renderTemplateAsync } from '../../../templates.js';
-import { debounce, delay } from '../../../utils.js';
+import { debounce, delay, download } from '../../../utils.js';
 import { createNewWorldInfo, createWorldInfoEntry, getFreeWorldName, getWorldEntry, loadWorldInfo, onWorldInfoChange, saveWorldInfo, selected_world_info, world_info, world_names } from '../../../world-info.js';
 
 const dom = {
@@ -266,8 +266,12 @@ const renderBook = async(name, before = null)=>{
                                     rename.classList.add('stwid--item');
                                     rename.classList.add('stwid--rename');
                                     rename.addEventListener('click', async(evt)=>{
-                                        evt.stopPropagation();
-                                        toastr.warning('not implemented');
+                                        //TODO cheeky monkey
+                                        const sel = /**@type {HTMLSelectElement}*/(document.querySelector('#world_editor_select'));
+                                        sel.value = /**@type {HTMLOptionElement[]}*/([...sel.children]).find(it=>it.textContent == name).value;
+                                        sel.dispatchEvent(new Event('change', { bubbles:true }));
+                                        await delay(500);
+                                        document.querySelector('#world_popup_name_button').click();
                                     });
                                     const i = document.createElement('i'); {
                                         i.classList.add('stwid--icon');
@@ -286,6 +290,7 @@ const renderBook = async(name, before = null)=>{
                                         bulk.classList.add('stwid--item');
                                         bulk.classList.add('stwid--bulkEdit');
                                         bulk.addEventListener('click', async(evt)=>{
+                                            //TODO cheeky monkey
                                             const sel = /**@type {HTMLSelectElement}*/(document.querySelector('#world_editor_select'));
                                             sel.value = /**@type {HTMLOptionElement[]}*/([...sel.children]).find(it=>it.textContent == name).value;
                                             sel.dispatchEvent(new Event('change', { bubbles:true }));
@@ -309,8 +314,7 @@ const renderBook = async(name, before = null)=>{
                                     exp.classList.add('stwid--item');
                                     exp.classList.add('stwid--export');
                                     exp.addEventListener('click', async(evt)=>{
-                                        evt.stopPropagation();
-                                        toastr.warning('not implemented');
+                                        download(JSON.stringify({ entries:cache[name].entries }), name, 'application/json');
                                     });
                                     const i = document.createElement('i'); {
                                         i.classList.add('stwid--icon');
@@ -328,8 +332,12 @@ const renderBook = async(name, before = null)=>{
                                     dup.classList.add('stwid--item');
                                     dup.classList.add('stwid--duplicate');
                                     dup.addEventListener('click', async(evt)=>{
-                                        evt.stopPropagation();
-                                        toastr.warning('not implemented');
+                                        //TODO cheeky monkey
+                                        const sel = /**@type {HTMLSelectElement}*/(document.querySelector('#world_editor_select'));
+                                        sel.value = /**@type {HTMLOptionElement[]}*/([...sel.children]).find(it=>it.textContent == name).value;
+                                        sel.dispatchEvent(new Event('change', { bubbles:true }));
+                                        await delay(500);
+                                        document.querySelector('#world_duplicate').click();
                                     });
                                     const i = document.createElement('i'); {
                                         i.classList.add('stwid--icon');
@@ -347,8 +355,12 @@ const renderBook = async(name, before = null)=>{
                                     del.classList.add('stwid--item');
                                     del.classList.add('stwid--delete');
                                     del.addEventListener('click', async(evt)=>{
-                                        evt.stopPropagation();
-                                        toastr.warning('not implemented');
+                                        //TODO cheeky monkey
+                                        const sel = /**@type {HTMLSelectElement}*/(document.querySelector('#world_editor_select'));
+                                        sel.value = /**@type {HTMLOptionElement[]}*/([...sel.children]).find(it=>it.textContent == name).value;
+                                        sel.dispatchEvent(new Event('change', { bubbles:true }));
+                                        await delay(500);
+                                        document.querySelector('#world_popup_delete').click();
                                     });
                                     const i = document.createElement('i'); {
                                         i.classList.add('stwid--icon');
