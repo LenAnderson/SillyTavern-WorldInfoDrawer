@@ -112,7 +112,7 @@ body.stwid-- #WorldInfo .stwid--list .stwid--books .stwid--book .stwid--entry:ho
 body.stwid-- #WorldInfo .stwid--list .stwid--books .stwid--book .stwid--entry.stwid--active .stwid--status {
   opacity: 1;
 }
-body.stwid-- #WorldInfo .stwid--list .stwid--books .stwid--book .stwid--entry :has(.stwid--isEnabled.fa-toggle-off) {
+body.stwid-- #WorldInfo .stwid--list .stwid--books .stwid--book .stwid--entry:has(.stwid--enabled.fa-toggle-off) {
   opacity: 0.5;
 }
 body.stwid-- #WorldInfo .stwid--list .stwid--books .stwid--book .stwid--entry .stwid--body {
