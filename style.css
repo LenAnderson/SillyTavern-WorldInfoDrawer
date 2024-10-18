@@ -257,3 +257,165 @@ body.stwid-- #WorldInfo .stwid--editor [name="WIEntryBottomControls"] {
 .stwid--blocker .stwid--menu .stwid--item .stwid--label {
   flex: 1 1 auto;
 }
+.stwid--orderHelper {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.stwid--orderHelper .stwid--actions {
+  flex: 0 0 auto;
+  display: flex;
+  gap: 1.5em;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--SmartThemeBlurTintColor);
+}
+.stwid--orderHelper .stwid--actions .stwid--inputWrap {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  color: var(--SmartThemeEmColor);
+  font-size: smaller;
+}
+.stwid--orderHelper .stwid--filter {
+  background-color: var(--SmartThemeBlurTintColor);
+  display: none;
+  gap: 1em;
+  height: 20vh;
+}
+.stwid--orderHelper .stwid--filter.stwid--active {
+  display: flex;
+}
+.stwid--orderHelper .stwid--filter .stwid--main {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+.stwid--orderHelper .stwid--filter .stwid--main .stwid--hint {
+  color: var(--SmartThemeEmColor);
+  font-size: smaller;
+}
+.stwid--orderHelper .stwid--filter .stwid--main .stwid--hint code {
+  font-size: smaller;
+}
+.stwid--orderHelper .stwid--filter .stwid--main .stwid--script {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+}
+.stwid--orderHelper .stwid--filter .stwid--main .stwid--script .stwid--syntax,
+.stwid--orderHelper .stwid--filter .stwid--main .stwid--script .stwid--input {
+  grid-column: 1;
+  grid-row: 1;
+  height: 100%;
+  width: 100%;
+  font-family: var(--monoFontFamily, monospace);
+  padding: 0.75em;
+  margin: 0;
+  border: none;
+  line-height: 1.2;
+  border: 1px solid var(--SmartThemeBorderColor);
+  border-radius: 5px;
+  white-space: pre;
+  resize: none;
+  tab-size: 4;
+  max-height: unset;
+}
+.stwid--orderHelper .stwid--filter .stwid--main .stwid--script .stwid--input {
+  caret-color: var(--ac-style-color-text);
+}
+.stwid--orderHelper .stwid--filter .stwid--main .stwid--script .stwid--input::-webkit-scrollbar,
+.stwid--orderHelper .stwid--filter .stwid--main .stwid--script .stwid--input::-webkit-scrollbar-thumb {
+  visibility: hidden;
+}
+.stwid--orderHelper .stwid--filter .stwid--main .stwid--script .stwid--input::selection {
+  color: transparent;
+  background-color: rgba(108 171 251 / 0.25);
+}
+@supports (rgb(from var(--ac-style-color-matchedText) r g b / 0.25)) {
+  .stwid--orderHelper .stwid--filter .stwid--main .stwid--script .stwid--input::selection {
+    background-color: rgb(from var(--ac-style-color-matchedText) r g b / 0.25);
+  }
+}
+.stwid--orderHelper .stwid--filter .stwid--preview {
+  font-family: var(--monoFontFamily, monospace);
+  font-size: 0.6em;
+  white-space: pre;
+  max-width: 30%;
+  overflow: auto;
+  height: 100%;
+}
+.stwid--orderHelper .stwid--input {
+  width: auto;
+}
+.stwid--orderTableWrap {
+  flex: 1 1 auto;
+  overflow: auto;
+}
+.stwid--orderTable {
+  border: 0;
+  border-collapse: collapse;
+  border-spacing: 0;
+  text-align: left;
+  white-space: nowrap;
+  width: 100%;
+}
+.stwid--orderTable thead {
+  background-color: var(--SmartThemeBlurTintColor);
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  font-size: smaller;
+}
+.stwid--orderTable tr {
+  border-bottom: 5px solid var(--SmartThemeBorderColor);
+  transition: 200ms;
+  background-color: var(--primaryBgCol, var(--SmartThemeBlurTintColor));
+}
+.stwid--orderTable tr:hover {
+  background-color: color-mix(in srgb, var(--SmartThemeQuoteColor) 50%, transparent 50%);
+}
+.stwid--orderTable tr.stwid--isFiltered {
+  display: none;
+}
+.stwid--orderTable tr:has(.stwid--enabled.fa-toggle-off) {
+  opacity: 0.5;
+}
+.stwid--orderTable tr th,
+.stwid--orderTable tr td {
+  text-align: left;
+  padding: 0 1em;
+  width: 0;
+}
+.stwid--orderTable tr td {
+  color: rgb(from var(--SmartThemeBodyColor) r g b / 0.75);
+  font-size: small;
+}
+.stwid--orderTable tr td .stwid--sortableHandle {
+  cursor: pointer;
+  opacity: 0.5;
+  padding: 4px;
+  transition: 200ms;
+}
+.stwid--orderTable tr td .stwid--sortableHandle:hover {
+  opacity: 1;
+}
+.stwid--orderTable tr td:has(.stwid--entry) {
+  width: 100%;
+}
+.stwid--orderTable tr td:has(.stwid--entry) .stwid--book {
+  color: var(--SmartThemeEmColor);
+  font-size: 0.6em;
+  line-height: 1;
+}
+.stwid--orderTable tr td:has(.stwid--entry) .stwid--key {
+  color: var(--SmartThemeEmColor);
+  font-size: 0.75em;
+  font-style: italic;
+  line-height: 1;
+}
+.stwid--orderTable tr td .stwid--enabled {
+  color: var(--SmartThemeQuoteColor);
+  cursor: pointer;
+}
