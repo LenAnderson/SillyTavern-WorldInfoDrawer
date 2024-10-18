@@ -648,10 +648,10 @@ const addDrawer = ()=>{
                                 entries.sort((a,b)=>{
                                     if (a.data.position > b.data.position) return 1;
                                     if (a.data.position < b.data.position) return -1;
-                                    if (a.data.depth ?? Number.MAX_SAFE_INTEGER < b.data.depth ?? Number.MAX_SAFE_INTEGER) return 1;
-                                    if (a.data.depth ?? Number.MAX_SAFE_INTEGER > b.data.depth ?? Number.MAX_SAFE_INTEGER) return -1;
-                                    if (a.data.order ?? Number.MAX_SAFE_INTEGER > b.data.order ?? Number.MAX_SAFE_INTEGER) return 1;
-                                    if (a.data.order ?? Number.MAX_SAFE_INTEGER < b.data.order ?? Number.MAX_SAFE_INTEGER) return -1;
+                                    if ((a.data.depth ?? Number.MAX_SAFE_INTEGER) < (b.data.depth ?? Number.MAX_SAFE_INTEGER)) return 1;
+                                    if ((a.data.depth ?? Number.MAX_SAFE_INTEGER) > (b.data.depth ?? Number.MAX_SAFE_INTEGER)) return -1;
+                                    if ((a.data.order ?? Number.MAX_SAFE_INTEGER) > (b.data.order ?? Number.MAX_SAFE_INTEGER)) return 1;
+                                    if ((a.data.order ?? Number.MAX_SAFE_INTEGER) < (b.data.order ?? Number.MAX_SAFE_INTEGER)) return -1;
                                     return (a.data.comment ?? a.data.key.join(', ')).toLowerCase().localeCompare((b.data.comment ?? b.data.key.join(', ')).toLowerCase());
                                 });
                                 const body = document.createElement('div'); {
