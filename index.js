@@ -15,6 +15,12 @@ const dom = {
     /**@type {HTMLElement} */
     activationToggle: undefined,
     order: {
+        /**@type {HTMLElement} */
+        toggle: undefined,
+        /**@type {HTMLInputElement} */
+        start: undefined,
+        /**@type {HTMLInputElement} */
+        step: undefined,
         direction: {
             /**@type {HTMLInputElement} */
             up: undefined,
@@ -29,6 +35,8 @@ const dom = {
         },
         /**@type {{[book:string]:{[uid:string]:HTMLElement}}} */
         entries: {},
+        /**@type {HTMLElement} */
+        tbody: undefined,
     },
 };
 /**@type {{name:string, uid:string}} */
@@ -175,6 +183,9 @@ eventSource.on(event_types.WORLDINFO_SETTINGS_UPDATED, ()=>updateSettingsChange(
 export const jumpToEntry = async(name, uid)=>{
     if (dom.activationToggle.classList.contains('stwid--active')) {
         dom.activationToggle.click();
+    }
+    if (dom.order.toggle.classList.contains('stwid--active')) {
+        dom.order.toggle.click();
     }
     cache[name].dom.entryList.classList.remove('stwid--isCollapsed');
     cache[name].dom.collapseToggle.classList.add('fa-chevron-up');
@@ -518,6 +529,9 @@ const renderEntry = async(e, name, before = null)=>{
             if (dom.activationToggle.classList.contains('stwid--active')) {
                 dom.activationToggle.click();
             }
+            if (dom.order.toggle.classList.contains('stwid--active')) {
+                dom.order.toggle.click();
+            }
             entry.classList.add('stwid--active');
             dom.editor.innerHTML = '';
             const unfocus = document.createElement('div'); {
@@ -613,6 +627,9 @@ const addDrawer = ()=>{
                             currentEditor = null;
                             if (is) {
                                 dom.editor.innerHTML = '';
+                                if (dom.order.toggle.classList.contains('stwid--active')) {
+                                    dom.order.toggle.click();
+                                }
                                 for (const cb of Object.values(cache)) {
                                     for (const ce of Object.values(cb.dom.entry)) {
                                         ce.root.classList.remove('stwid--active');
@@ -631,6 +648,7 @@ const addDrawer = ()=>{
                         controls.append(settings);
                     }
                     const order = document.createElement('div'); {
+                        dom.order.toggle = order;
                         order.classList.add('menu_button');
                         order.classList.add('fa-solid', 'fa-fw', 'fa-arrow-down-wide-short');
                         order.title = 'Order Helper\n---\nUse drag and drop to help assign an "Order" value to entries of all active books.';
@@ -638,6 +656,9 @@ const addDrawer = ()=>{
                             dom.editor.innerHTML = '';
                             const is = order.classList.toggle('stwid--active');
                             currentEditor = null;
+                            if (dom.activationToggle.classList.contains('stwid--active')) {
+                                dom.activationToggle.click();
+                            }
                             for (const cb of Object.values(cache)) {
                                 for (const ce of Object.values(cb.dom.entry)) {
                                     ce.root.classList.remove('stwid--active');
@@ -677,14 +698,15 @@ const addDrawer = ()=>{
                                             startLbl.title = 'Starting Order (topmost entry in list)';
                                             startLbl.append('Start: ');
                                             const start = document.createElement('input'); {
+                                                dom.order.start = start;
                                                 start.classList.add('stwid--input');
                                                 start.classList.add('text_pole');
                                                 start.type = 'number';
                                                 start.min = '1';
                                                 start.max = '10000';
-                                                start.value = localStorage.getItem('stwid--order-start') ?? '1000';
+                                                start.value = localStorage.getItem('stwid--order-start') ?? '100';
                                                 start.addEventListener('change', ()=>{
-                                                    localStorage.setItem('stwid--step', start.value);
+                                                    localStorage.setItem('stwid--order-start', start.value);
                                                 });
                                                 startLbl.append(start);
                                             }
@@ -694,6 +716,7 @@ const addDrawer = ()=>{
                                             stepLbl.classList.add('stwid--inputWrap');
                                             stepLbl.append('Spacing: ');
                                             const step = document.createElement('input'); {
+                                                dom.order.step = step;
                                                 step.classList.add('stwid--input');
                                                 step.classList.add('text_pole');
                                                 step.type = 'number';
@@ -714,11 +737,11 @@ const addDrawer = ()=>{
                                                 wrap.classList.add('stwid--toggleWrap');
                                                 const up = document.createElement('label'); {
                                                     up.classList.add('stwid--inputWrap');
-                                                    up.title = 'Increase Order (starting from the top of the list)';
+                                                    up.title = 'Start at the bottom of the list';
                                                     const inp = document.createElement('input'); {
                                                         dom.order.direction.up = inp;
                                                         inp.type = 'radio';
-                                                        inp.checked = false;
+                                                        inp.checked = (localStorage.getItem('stwid--order-direction') ?? 'down') == 'up';
                                                         inp.addEventListener('click', ()=>{
                                                             inp.checked = true;
                                                             dom.order.direction.down.checked = false;
@@ -731,11 +754,11 @@ const addDrawer = ()=>{
                                                 }
                                                 const down = document.createElement('label'); {
                                                     down.classList.add('stwid--inputWrap');
-                                                    down.title = 'Decrease Order (starting from the top of the list)';
+                                                    down.title = 'Start at the top of the list';
                                                     const inp = document.createElement('input'); {
                                                         dom.order.direction.down = inp;
                                                         inp.type = 'radio';
-                                                        inp.checked = true;
+                                                        inp.checked = (localStorage.getItem('stwid--order-direction') ?? 'down') == 'down';
                                                         inp.addEventListener('click', ()=>{
                                                             inp.checked = true;
                                                             dom.order.direction.up.checked = false;
@@ -755,7 +778,25 @@ const addDrawer = ()=>{
                                             apply.classList.add('fa-solid', 'fa-fw', 'fa-arrow-down-9-1');
                                             apply.title = 'Apply current sorting as Order';
                                             apply.addEventListener('click', async()=>{
-                                                toastr.warning('Not implemented');
+                                                const start = parseInt(dom.order.start.value);
+                                                const step = parseInt(dom.order.step.value);
+                                                const up = dom.order.direction.up.checked;
+                                                let order = start;
+                                                let rows = [...dom.order.tbody.children];
+                                                const books = [];
+                                                if (up) rows.reverse();
+                                                for (const tr of rows) {
+                                                    if (tr.classList.contains('stwid--isFiltered')) continue;
+                                                    const book = tr.getAttribute('data-book');
+                                                    const uid = tr.getAttribute('data-uid');
+                                                    if (!books.includes(book)) books.push(book);
+                                                    cache[book].entries[uid].order = order;
+                                                    /**@type {HTMLInputElement}*/(tr.querySelector('[name="order"]')).value = order.toString();
+                                                    order += step;
+                                                }
+                                                for (const book of books) {
+                                                    await saveWorldInfo(book, { entries:cache[book].entries }, true);
+                                                }
                                             });
                                             actions.append(apply);
                                         }
@@ -874,12 +915,15 @@ const addDrawer = ()=>{
                                                 tbl.append(thead);
                                             }
                                             const tbody = document.createElement('tbody'); {
+                                                dom.order.tbody = tbody;
                                                 $(tbody).sortable({
                                                     // handle: 'stwid--sortableHandle',
                                                     delay: getSortableDelay(),
                                                 });
                                                 for (const e of entries) {
                                                     const tr = document.createElement('tr'); {
+                                                        tr.setAttribute('data-book', e.book);
+                                                        tr.setAttribute('data-uid', e.data.uid);
                                                         if (!dom.order.entries[e.book]) {
                                                             dom.order.entries[e.book] = {};
                                                         }
@@ -1001,6 +1045,7 @@ const addDrawer = ()=>{
                                                             const inp = document.createElement('input'); {
                                                                 inp.classList.add('stwid--input');
                                                                 inp.classList.add('text_pole');
+                                                                inp.name = 'order';
                                                                 inp.min = '0';
                                                                 inp.max = '99999';
                                                                 inp.type = 'number';
