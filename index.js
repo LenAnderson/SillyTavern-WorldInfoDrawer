@@ -745,6 +745,8 @@ const addDrawer = ()=>{
                                                         inp.addEventListener('click', ()=>{
                                                             inp.checked = true;
                                                             dom.order.direction.down.checked = false;
+                                                            apply.classList.remove('fa-arrow-down-1-9');
+                                                            apply.classList.add('fa-arrow-up-9-1');
                                                             localStorage.setItem('stwid--order-direction', 'up');
                                                         });
                                                         up.append(inp);
@@ -762,6 +764,8 @@ const addDrawer = ()=>{
                                                         inp.addEventListener('click', ()=>{
                                                             inp.checked = true;
                                                             dom.order.direction.up.checked = false;
+                                                            apply.classList.add('fa-arrow-down-1-9');
+                                                            apply.classList.remove('fa-arrow-up-9-1');
                                                             localStorage.setItem('stwid--order-direction', 'down');
                                                         });
                                                         down.append(inp);
@@ -775,7 +779,12 @@ const addDrawer = ()=>{
                                         }
                                         const apply = document.createElement('div'); {
                                             apply.classList.add('menu_button');
-                                            apply.classList.add('fa-solid', 'fa-fw', 'fa-arrow-down-9-1');
+                                            apply.classList.add('fa-solid', 'fa-fw');
+                                            if ((localStorage.getItem('stwid--order-direction') ?? 'down') == 'up') {
+                                                apply.classList.add('fa-arrow-up-9-1');
+                                            } else {
+                                                apply.classList.add('fa-arrow-down-1-9');
+                                            }
                                             apply.title = 'Apply current sorting as Order';
                                             apply.addEventListener('click', async()=>{
                                                 const start = parseInt(dom.order.start.value);
