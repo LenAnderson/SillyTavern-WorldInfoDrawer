@@ -401,6 +401,12 @@ body.stwid-- #WorldInfo .stwid--editor [name="WIEntryBottomControls"] {
 .stwid--orderTable tr td .stwid--sortableHandle:hover {
   opacity: 1;
 }
+.stwid--orderTable tr td [name="depth"] {
+  display: none;
+}
+.stwid--orderTable tr td:has([name="position"] > [value="4"]:checked) + td > [name="depth"] {
+  display: inline-block;
+}
 .stwid--orderTable tr td:has(.stwid--entry) {
   width: 100%;
 }

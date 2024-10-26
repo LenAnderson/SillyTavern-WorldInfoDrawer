@@ -1042,6 +1042,7 @@ const addDrawer = ()=>{
                                                             const inp = document.createElement('input'); {
                                                                 inp.classList.add('stwid--input');
                                                                 inp.classList.add('text_pole');
+                                                                inp.name = 'depth';
                                                                 inp.min = '0';
                                                                 inp.max = '99999';
                                                                 inp.type = 'number';

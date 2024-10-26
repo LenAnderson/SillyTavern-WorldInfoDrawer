@@ -436,6 +436,12 @@ body.stwid-- #WorldInfo {
 					opacity: 1;
 				}
 			}
+            [name="depth"] {
+                display: none;
+            }
+            &:has([name="position"] > [value="4"]:checked) + td > [name="depth"] {
+                display: inline-block;
+            }
 			&:has(.stwid--entry) {
 				width: 100%;
 				.stwid--book {
