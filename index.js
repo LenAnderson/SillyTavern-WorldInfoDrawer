@@ -339,6 +339,34 @@ const renderBook = async(name, before = null)=>{
                                         menu.append(bulk);
                                     }
                                 }
+                                if (extensionNames.includes('third-party/SillyTavern-WorldInfoExternalEditor')) {
+                                    const editor = document.createElement('div'); {
+                                        editor.classList.add('stwid--item');
+                                        editor.classList.add('stwid--externalEditor');
+                                        editor.addEventListener('click', async(evt)=>{
+                                            fetch('/api/plugins/wiee/editor', {
+                                                method: 'POST',
+                                                headers: getRequestHeaders(),
+                                                body: JSON.stringify({
+                                                    book: name,
+                                                    command: 'code',
+                                                    commandArguments: ['.'],
+                                                }),
+                                            });
+                                        });
+                                        const i = document.createElement('i'); {
+                                            i.classList.add('stwid--icon');
+                                            i.classList.add('fa-solid', 'fa-fw', 'fa-laptop-code');
+                                            editor.append(i);
+                                        }
+                                        const txt = document.createElement('span'); {
+                                            txt.classList.add('stwid--label');
+                                            txt.textContent = 'External Editor';
+                                            editor.append(txt);
+                                        }
+                                        menu.append(editor);
+                                    }
+                                }
                                 const exp = document.createElement('div'); {
                                     exp.classList.add('stwid--item');
                                     exp.classList.add('stwid--export');
