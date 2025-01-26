@@ -1,4 +1,4 @@
-import { event_types, eventSource } from '../../../../script.js';
+import { event_types, eventSource, getRequestHeaders } from '../../../../script.js';
 import { AutoComplete } from '../../../autocomplete/AutoComplete.js';
 import { extensionNames } from '../../../extensions.js';
 import { Popup } from '../../../popup.js';
