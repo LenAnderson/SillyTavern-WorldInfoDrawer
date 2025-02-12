@@ -187,12 +187,20 @@ body.stwid-- #WorldInfo {
 
 		&.stwid--focus {
 			#WIEntryHeaderTitlesPC,
-			.world_entry *:not(:has([name="content"])):not([name="content"]) {
+			.world_entry *:not(:has([name="content"])):not([name="content"]):not(:has([class*="stwim--"])):not([class*="stwim--"]) {
 				display: none;
 			}
 			.stwid--unfocusToggle {
 				display: flex;
 			}
+            :has(> .stwim--pickerTriggerWrap) {
+                justify-content: end;
+                .stwim--pickerTriggerWrap {
+                    position: absolute;
+                    top: -3em;
+                    right: 0;
+                }
+            }
 		}
 		.stwid--unfocusToggle {
 			display: none;

@@ -171,11 +171,19 @@ body.stwid-- #WorldInfo .stwid--editor #wiActivationSettings #wiCheckboxes {
   width: unset;
 }
 body.stwid-- #WorldInfo .stwid--editor.stwid--focus #WIEntryHeaderTitlesPC,
-body.stwid-- #WorldInfo .stwid--editor.stwid--focus .world_entry *:not(:has([name="content"])):not([name="content"]) {
+body.stwid-- #WorldInfo .stwid--editor.stwid--focus .world_entry *:not(:has([name="content"])):not([name="content"]):not(:has([class*="stwim--"])):not([class*="stwim--"]) {
   display: none;
 }
 body.stwid-- #WorldInfo .stwid--editor.stwid--focus .stwid--unfocusToggle {
   display: flex;
+}
+body.stwid-- #WorldInfo .stwid--editor.stwid--focus :has(> .stwim--pickerTriggerWrap) {
+  justify-content: end;
+}
+body.stwid-- #WorldInfo .stwid--editor.stwid--focus :has(> .stwim--pickerTriggerWrap) .stwim--pickerTriggerWrap {
+  position: absolute;
+  top: -3em;
+  right: 0;
 }
 body.stwid-- #WorldInfo .stwid--editor .stwid--unfocusToggle {
   display: none;

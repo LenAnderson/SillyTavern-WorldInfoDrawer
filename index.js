@@ -128,28 +128,49 @@ const updateWIChange = async(name = null, data = null)=>{
                 hasChange = true;
                 hasUpdate = true;
                 switch (k) {
+                    case 'content': {
+                        if (currentEditor?.name == name && currentEditor?.uid == e && dom.editor.querySelector('[name="content"]').value != n.content) {
+                            cache[name].dom.entry[e].root.click();
+                        }
+                        break;
+                    }
                     case 'comment': {
+                        if (currentEditor?.name == name && currentEditor?.uid == e && dom.editor.querySelector('[name="comment"]').value != n.comment) {
+                            cache[name].dom.entry[e].root.click();
+                        }
                         cache[name].dom.entry[e].comment.textContent = n.comment;
                         break;
                     }
                     case 'key': {
+                        if (hasChange && currentEditor?.name == name && currentEditor?.uid == e) {
+                            cache[name].dom.entry[e].root.click();
+                        }
                         cache[name].dom.entry[e].key.textContent = n.key.join(', ');
                         break;
                     }
                     case 'disable': {
+                        if (hasChange && currentEditor?.name == name && currentEditor?.uid == e) {
+                            cache[name].dom.entry[e].root.click();
+                        }
                         cache[name].dom.entry[e].isEnabled.classList[n[k] ? 'remove' : 'add']('fa-toggle-on');
                         cache[name].dom.entry[e].isEnabled.classList[n[k] ? 'add' : 'remove']('fa-toggle-off');
                         break;
                     }
                     case 'constant':
                     case 'vectorized': {
+                        if (hasChange && currentEditor?.name == name && currentEditor?.uid == e) {
+                            cache[name].dom.entry[e].root.click();
+                        }
                         cache[name].dom.entry[e].strategy.value = entryState(n);
                         break;
                     }
+                    default: {
+                        if (hasChange && currentEditor?.name == name && currentEditor?.uid == e) {
+                            cache[name].dom.entry[e].root.click();
+                        }
+                        break;
+                    }
                 }
-            }
-            if (hasChange && currentEditor?.name == name && currentEditor?.uid == e) {
-                // cache[name].dom.entry[e].root.click();
             }
         }
         cache[name].entries = world.entries;
